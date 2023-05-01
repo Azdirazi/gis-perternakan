@@ -1,59 +1,119 @@
--- phpMyAdmin SQL Dump
--- version 5.2.0
--- https://www.phpmyadmin.net/
---
--- Host: 127.0.0.1
--- Generation Time: Apr 12, 2023 at 09:28 AM
--- Server version: 10.4.24-MariaDB
--- PHP Version: 8.1.6
+/*
+ Navicat Premium Data Transfer
 
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-START TRANSACTION;
-SET time_zone = "+00:00";
+ Source Server         : lnpp-8-mysql
+ Source Server Type    : MySQL
+ Source Server Version : 50722
+ Source Host           : 17.17.17.5:3306
+ Source Schema         : db_gis
 
+ Target Server Type    : MySQL
+ Target Server Version : 50722
+ File Encoding         : 65001
 
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
+ Date: 01/05/2023 17:27:14
+*/
 
---
--- Database: `db_peternakan`
---
+SET NAMES utf8mb4;
+SET FOREIGN_KEY_CHECKS = 0;
 
--- --------------------------------------------------------
+-- ----------------------------
+-- Table structure for jenis
+-- ----------------------------
+DROP TABLE IF EXISTS `jenis`;
+CREATE TABLE `jenis` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nama` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Table structure for table `user`
---
+-- ----------------------------
+-- Table structure for kecamatan
+-- ----------------------------
+DROP TABLE IF EXISTS `kecamatan`;
+CREATE TABLE `kecamatan` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nama` varchar(255) NOT NULL,
+  `deskripsi` text NOT NULL,
+  `polygon` text NOT NULL,
+  `setsementara` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+-- ----------------------------
+-- Table structure for keterangan
+-- ----------------------------
+DROP TABLE IF EXISTS `keterangan`;
+CREATE TABLE `keterangan` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_tahun` int(255) NOT NULL,
+  `id_jenis` int(255) NOT NULL,
+  `jenis` varchar(255) NOT NULL,
+  `c1` varchar(255) DEFAULT NULL,
+  `c2` varchar(255) DEFAULT NULL,
+  `c3` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `keterangan_id_tahun_foreign` (`id_tahun`),
+  KEY `keterangan_id_jenis` (`id_jenis`),
+  CONSTRAINT `keterangan_id_jenis` FOREIGN KEY (`id_jenis`) REFERENCES `jenis` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `keterangan_id_tahun_foreign` FOREIGN KEY (`id_tahun`) REFERENCES `tahun` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+-- Table structure for peternakan
+-- ----------------------------
+DROP TABLE IF EXISTS `peternakan`;
+CREATE TABLE `peternakan` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_kecamatan` int(255) NOT NULL,
+  `id_ternak` int(255) NOT NULL,
+  `id_tahun` int(255) NOT NULL,
+  `id_jenis` int(255) NOT NULL,
+  `jumlah_ternak` int(255) NOT NULL,
+  `normalisasi` double(10,4) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `peternakan_id_kecamatan_foreign` (`id_kecamatan`),
+  KEY `peternakan_id_tahun_foreign` (`id_tahun`),
+  KEY `peternakan_id_ternak_foreign` (`id_ternak`),
+  KEY `peternakan_id_jenis_foreign` (`id_jenis`),
+  CONSTRAINT `peternakan_id_jenis_foreign` FOREIGN KEY (`id_jenis`) REFERENCES `jenis` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `peternakan_id_kecamatan_foreign` FOREIGN KEY (`id_kecamatan`) REFERENCES `kecamatan` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `peternakan_id_tahun_foreign` FOREIGN KEY (`id_tahun`) REFERENCES `tahun` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `peternakan_id_ternak_foreign` FOREIGN KEY (`id_ternak`) REFERENCES `ternak` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+-- Table structure for tahun
+-- ----------------------------
+DROP TABLE IF EXISTS `tahun`;
+CREATE TABLE `tahun` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `tahun` year(4) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+-- Table structure for ternak
+-- ----------------------------
+DROP TABLE IF EXISTS `ternak`;
+CREATE TABLE `ternak` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `ternak` varchar(255) NOT NULL,
+  `centro_1` double(10,4) DEFAULT NULL,
+  `centro_2` double(10,4) DEFAULT NULL,
+  `centro_3` varchar(10) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+-- Table structure for user
+-- ----------------------------
+DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `username` varchar(255) NOT NULL,
-  `password` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `password` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC;
 
---
--- Indexes for dumped tables
---
-
---
--- Indexes for table `user`
---
-ALTER TABLE `user`
-  ADD PRIMARY KEY (`id`);
-
---
--- AUTO_INCREMENT for dumped tables
---
-
---
--- AUTO_INCREMENT for table `user`
---
-ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-COMMIT;
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+SET FOREIGN_KEY_CHECKS = 1;
