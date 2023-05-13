@@ -1,6 +1,6 @@
 <?php
 
-   include 'connection.example.php';
+   include 'connection.php';
    include 'helper.php';
 
    function create_user($form) {
