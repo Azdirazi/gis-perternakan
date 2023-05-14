@@ -339,4 +339,79 @@
     }
     /* end of jenis*/
 
+    /* ternak */
+    function tambah_data_ternak($form)
+    {
+        global $connection;
+
+        $ternak = htmlspecialchars($form['ternak']);
+        $jenis = $form['jenis'];
+
+        $connection->query("
+            INSERT INTO ternak
+            (ternak, jenis)
+            VALUES
+            ('$ternak', '$jenis')
+        ");
+
+        if ($connection->affected_rows > 0) {
+            set_flash_message('add_success', 'Berhasil menambahkan ternak');
+        } else {
+            set_flash_message('add_failed', 'Gagal menambahkan ternak');
+        }
+        return redirect('ternak.php?halaman=ternak');
+    }
+
+    function ambil_data_ternak()
+    {
+        global $connection;
+
+        return $connection->query("
+            SELECT
+            id,
+            ternak as nama,
+            jenis
+            FROM ternak
+        ")->fetch_all(MYSQLI_ASSOC);
+    }
+
+    function ambil_ternak_by_id($id)
+    {
+        global $connection;
+
+        return $connection->query("
+            SELECT
+            id,
+            ternak as nama,
+            jenis
+            FROM ternak
+            WHERE id = '$id'
+        ")->fetch_assoc();
+    }
+
+    function update_data_ternak($form)
+    {
+        global $connection;
+
+        $id = $form['id'];
+        $ternak = htmlspecialchars($form['ternak']);
+        $jenis = $form['jenis'];
+
+        $connection->query("
+            UPDATE ternak
+            SET
+                ternak = '$ternak',
+                jenis = '$jenis'
+            WHERE id = '$id'
+        ");
+
+        if ($connection->affected_rows > 0) {
+            set_flash_message('add_success', 'Berhasil update ternak');
+        } else {
+            set_flash_message('add_failed', 'Gagal update ternak');
+        }
+        return redirect('ternak.php?halaman=ternak');
+    }
+    /* end of ternak*/
+
 
