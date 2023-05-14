@@ -28,14 +28,38 @@
             </li>
 
             <!-- nav untuk non admin -->
-            <li class="nav-item <?php if ((isset($_GET['halaman']) && $_GET['halaman'] == 'peternakan') || isset($_GET['halaman']) == false) :?> active <?php endif;?>">
-                <a class="nav-link" href="peternakan.php?halaman=peternakan">
-                    <span>Peternakan</span>
+            <li class="nav-item <?php if ((isset($_GET['halaman']) && $_GET['halaman'] == 'admin') || isset($_GET['halaman']) == false) :?> active <?php endif;?>">
+                <a class="nav-link" href="admin.php?halaman=admin">
+                    <span>Admmin</span>
                 </a>
             </li>
 
-            <li class="nav-item <?php if ((isset($_GET['halaman']) && $_GET['halaman'] == 'peternakan') || isset($_GET['halaman']) == false) :?> active <?php endif;?>">
-                <a class="nav-link" href="grafis.php?halaman=peternakan">
+            <li class="nav-item <?php if ((isset($_GET['halaman']) && $_GET['halaman'] == 'jenis') || isset($_GET['halaman']) == false) :?> active <?php endif;?>">
+                <a class="nav-link" href="jenis.php?halaman=jenis">
+                    <span>Jenis</span>
+                </a>
+            </li>
+
+            <li class="nav-item <?php if ((isset($_GET['halaman']) && $_GET['halaman'] == 'ternak') || isset($_GET['halaman']) == false) :?> active <?php endif;?>">
+                <a class="nav-link" href="ternak.php?halaman=ternak">
+                    <span>Ternak</span>
+                </a>
+            </li>
+
+            <li class="nav-item <?php if ((isset($_GET['halaman']) && $_GET['halaman'] == 'tahun') || isset($_GET['halaman']) == false) :?> active <?php endif;?>">
+                <a class="nav-link" href="tahun.php?halaman=tahun">
+                    <span>Tahun</span>
+                </a>
+            </li>
+
+            <li class="nav-item <?php if ((isset($_GET['halaman']) && $_GET['halaman'] == 'kecamatan') || isset($_GET['halaman']) == false) :?> active <?php endif;?>">
+                <a class="nav-link" href="kecamatan.php?halaman=kecamatan">
+                    <span>Kecamatan</span>
+                </a>
+            </li>
+
+            <li class="nav-item <?php if ((isset($_GET['halaman']) && $_GET['halaman'] == 'peternak]an') || isset($_GET['halaman']) == false) :?> active <?php endif;?>">
+                <a class="nav-link" href="peternakan.php?halaman=peternakan">
                     <span>Peternakan</span>
                 </a>
             </li>
