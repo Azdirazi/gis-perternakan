@@ -96,3 +96,86 @@
 
         return $connection->query("SELECT id, tahun FROM tahun WHERE id= '$id'")->fetch_assoc();
    }
+
+
+   function tambah_data_kecamatan($form)
+   {
+       global  $connection;
+
+       $nama = $form['nama'];
+       $deskripsi = $form['deskripsi'];
+       $polygon = $form['polygon'];
+
+       $connection->query("
+            INSERT INTO kecamatan
+            (nama, deskripsi, polygon)
+            VALUES
+            ('$nama', '$deskripsi', '$polygon')
+       ");
+
+       if ($connection->affected_rows > 0) {
+           set_flash_message('add_success', 'Berhasil menambahkan kecamatan');
+       } else {
+           set_flash_message('add_failed', 'Gagal menambahkan kecamatan');
+       }
+       return redirect('kecamatan.php?halaman=kecamatan');
+
+   }
+
+   function ambil_data_kecamatan()
+   {
+       global  $connection;
+
+       return $connection->query("
+            SELECT 
+                id,
+                nama,
+                deskripsi
+            FROM
+                kecamatan
+       ")->fetch_all(MYSQLI_ASSOC);
+   }
+
+   function ambil_kecamatan_by_id($id)
+   {
+       global $connection;
+
+       return $connection->query("
+            SELECT
+                id,
+                nama,
+                deskripsi,
+                polygon
+            FROM
+                kecamatan
+            WHERE
+                id = '$id'
+       ")->fetch_assoc();
+   }
+
+   function update_data_kecamatan($form)
+   {
+       global $connection;
+
+       $id = $form['id'];
+       $nama = $form['nama'];
+       $deskripsi = $form['deskripsi'];
+       $polygon = $form['polygon'];
+
+       $connection->query("
+            UPDATE kecamatan
+            SET
+                nama  = '$nama',
+                deskripsi = '$deskripsi',
+                polygon = '$polygon'
+            WHERE
+                id = '$id'
+       ");
+
+       if ($connection->affected_rows > 0) {
+           set_flash_message('add_success', 'Berhasil update kecamatan');
+       } else {
+           set_flash_message('add_failed', 'Gagal update kecamatan');
+       }
+       return redirect('kecamatan.php?halaman=kecamatan');
+   }
