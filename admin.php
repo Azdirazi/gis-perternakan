@@ -28,12 +28,12 @@ include "function.php";
             <!-- Begin Page Content -->
             <div class="container-fluid">
                 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                    <h1 class="h5 mb-0 text-gray-800 text-center w-100 mt-4">Tahun</h1>
+                    <h1 class="h5 mb-0 text-gray-800 text-center w-100 mt-4">Admin</h1>
                 </div>
 
                 <div class="row justify-content-start">
                     <div class="col-lg-12 col-sm-12 card card-body">
-                        <a href="tambah-tahun.php?halaman=tahun" class=" w-25 btn btn-primary">Tambah</a>
+                        <a href="tambah-admin.php?halaman=admin" class=" w-25 btn btn-primary">Tambah</a>
 
                         <?php if (get_flash_name('add_success') != ""):?>
                             <div class="alert alert-success my-3">
@@ -48,27 +48,27 @@ include "function.php";
 
                         <!-- table of data -->
                         <div class="table-responsive mt-5">
-                            <table class="table table-striped table-hover table-bordered" id="table-tahun">
+                            <table class="table table-striped table-hover table-bordered" id="table-admin">
                                 <thead>
-                                    <tr>
-                                        <th>No</th>
-                                        <th>Tahun</th>
-                                        <th>Aksi</th>
-                                    </tr>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Name</th>
+                                    <th>Aksi</th>
+                                </tr>
                                 </thead>
                                 <tbody>
-                                    <?php $i = 1?>
-                                    <?php foreach (ambiL_data_tahun() as $data):?>
-                                        <tr>
-                                            <td><?= $i++ ?></td>
-                                            <td><?= $data['tahun']?></td>
-                                            <td>
-                                                <a href="update-tahun.php?halaman=tahun&id=<?= $data['id']?>" class="btn btn-warning">Edit</a>
-                                                ||
-                                                <a href="hapus-tahun.php?id=<?= $data['id']?>" class="btn btn-danger">Hapus</a>
-                                            </td>
-                                        </tr>
-                                    <?php endforeach;?>
+                                <?php $i = 1?>
+                                <?php foreach (ambil_data_admin() as $data):?>
+                                    <tr>
+                                        <td><?= $i++?></td>
+                                        <td><?= $data['username']?></td>
+                                        <td>
+                                            <a href="update-admin.php?halaman=admin&id=<?= $data['id']?>" class="btn btn-warning">Edit</a>
+                                            ||
+                                            <a href="hapus-admin.php?id=<?= $data['id']?>" class="btn btn-danger">Hapus</a>
+                                        </td>
+                                    </tr>
+                                <?php endforeach;?>
                                 </tbody>
                             </table>
                         </div>
@@ -93,7 +93,7 @@ include "function.php";
     <?php include "js.php"?>
     <script>
         $(document).ready(function () {
-            $("#table-tahun").DataTable()
+            $("#table-admin").DataTable()
         })
     </script>
 </div>
