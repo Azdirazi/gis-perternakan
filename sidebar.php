@@ -52,6 +52,12 @@
                 </a>
             </li>
 
+            <li class="nav-item <?php if ((isset($_GET['halaman']) && $_GET['halaman'] == 'peternak]an') || isset($_GET['halaman']) == false) :?> active <?php endif;?>">
+                <a class="nav-link" href="peternakan.php?halaman=peternakan">
+                    <span>Peternakan</span>
+                </a>
+            </li>
+
             <!-- Sidebar Toggler (Sidebar) -->
             <div class="text-center d-none d-md-inline">
                 <button class="rounded-circle border-0" id="sidebarToggle"></button>
