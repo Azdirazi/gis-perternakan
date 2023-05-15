@@ -27,7 +27,7 @@
                     <span>Beranda</span>
                 </a>
             </li>
-        <?php if($_SESSION['login']!= NULl):?>
+        <?php if($_SESSION['login']== true):?>
             <!-- nav untuk non admin -->
             <li class="nav-item <?php if ((isset($_GET['halaman']) && $_GET['halaman'] == 'admin') || isset($_GET['halaman']) == false) :?> active <?php endif;?>">
                 <a class="nav-link" href="admin.php?halaman=admin">
@@ -71,6 +71,9 @@
                 </a>
             </li>
         <?php endif;?>
+        <?php if($_SESSION['login']== false):?>
+        <?php endif;?>
+
             <!-- Sidebar Toggler (Sidebar) -->
             <div class="text-center d-none d-md-inline">
                 <button class="rounded-circle border-0" id="sidebarToggle"></button>
