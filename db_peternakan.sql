@@ -11,7 +11,7 @@
  Target Server Version : 50722
  File Encoding         : 65001
 
- Date: 01/05/2023 17:27:14
+ Date: 15/05/2023 11:37:59
 */
 
 SET NAMES utf8mb4;
@@ -25,7 +25,7 @@ CREATE TABLE `jenis` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `nama` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Table structure for kecamatan
@@ -36,7 +36,7 @@ CREATE TABLE `kecamatan` (
   `nama` varchar(255) NOT NULL,
   `deskripsi` text NOT NULL,
   `polygon` text NOT NULL,
-  `setsementara` varchar(255) NOT NULL,
+  `setsementara` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -102,8 +102,9 @@ CREATE TABLE `ternak` (
   `centro_1` double(10,4) DEFAULT NULL,
   `centro_2` double(10,4) DEFAULT NULL,
   `centro_3` varchar(10) DEFAULT NULL,
+  `jenis` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Table structure for user
