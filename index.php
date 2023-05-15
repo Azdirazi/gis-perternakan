@@ -55,16 +55,45 @@ include "function.php";
                         <div class="card card-body">
                         <div class="justify-content-center row ">
                             <div class="my-2 mx-4 card card-body col-lg-12">
-                                <h5>SELAMAT DATANG ADMIN</h5>
+                                <h5>Selamat Datang Admin</h5>
                             </div>
-                            <div class=" card card-body col-lg-6">
-                                <h5>Mahasiswa</h5>
-                                <a href="mahasiswa.php">More Info</a>
+                            <div class="w-100 row">
+                                <div class="mx-4  card card-body col-lg-">
+                                    <div class="row justify-content-between">
+                                        <h5>Data Ternak</h5>
+                                        <a class="btn btn-light" href="#">View</a>
+                                    </div>
+                                    <h4 class="text-black font-weight-bold ">8</h4>
+                                </div>
+                                <div class="mx-4  card card-body col-lg-">
+                                    <div class="row justify-content-between">
+                                        <h5>Data Tahun</h5>
+                                        <a class="btn btn-light" href="#">View</a>
+                                    </div>
+                                    <h4>1000000000000</h4>
+                                </div>
                             </div>
-                            <div class=" card card-body col-lg-6">
-                                <h5>User</h5>
-                                <a href="user.php">More Info</a>
+                            <div class="w-100 row my-2 justify-content-center">
+                                <div class="mx-4  card card-body col-lg-">
+                                    <div class="row justify-content-between">
+                                        <h5>Data Jumlah Keseluruhan</h5>
+                                    </div>
+                                    <h4 class="text-black font-weight-bold">8</h4>
+                                </div>
+                                <div class="card card-body col-lg-">
+                                    <div class="row justify-content-between">
+                                        <h5>Jumlah Kematian</h5>
+                                    </div>
+                                    <h4>1000000000000</h4>
+                                </div>
+                                <div class="mx-4  card card-body col-lg-">
+                                    <div class="row justify-content-between">
+                                        <h5>Jumlah Penyakit</h5>
+                                    </div>
+                                    <h4>1000000000000</h4>
+                                </div>
                             </div>
+                            
                         </div>
                     </div>
                     <?php endif;?>
