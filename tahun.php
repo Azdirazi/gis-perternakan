@@ -57,7 +57,7 @@ include "function.php";
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php $i = 0?>
+                                    <?php $i = 1?>
                                     <?php foreach (ambiL_data_tahun() as $data):?>
                                         <tr>
                                             <td><?= $i++ ?></td>

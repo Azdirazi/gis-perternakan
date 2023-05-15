@@ -4,18 +4,16 @@ include "function.php";
 ?>
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
 
     <?php include "head.php"?>
 
-    <title>User</title>
+    <title>Tahun</title>
 
     <?php include "css.php"?>
 </head>
 
 <body id="page-top">
-
 <!-- Page Wrapper -->
 <div id="wrapper">
 
@@ -27,54 +25,58 @@ include "function.php";
         <!-- Main Content -->
         <div id="content">
 
-            <?php include "navbar.php";?>
-
             <!-- Begin Page Content -->
             <div class="container-fluid">
                 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                    <h1 class="h3 mb-0 text-gray-800">Data Admin</h1>
+                    <h1 class="h5 mb-0 text-gray-800 text-center w-100 mt-4">Admin</h1>
                 </div>
-                <?php if(get_flash_name('add_success') != ""):?>
-                    <div class="alert alert-success" role="alert">
-                         <?= get_flash_message('add_success')?>
-                    </div>	
-                <?php endif;?>
 
-                 <div class="card card-body my-3">
-                        <a href="tambah-user.php" class="btn btn-primary col-lg-4 col-12 mb-4">Tambah</a>
-                        <h5 class="card-title">Data Admin</h5>
-                        <div class="table-responsive">
-                            <table class="table table-bordered table-hover table-striped" id="table-user">
+                <div class="row justify-content-start">
+                    <div class="col-lg-12 col-sm-12 card card-body">
+                        <a href="tambah-admin.php?halaman=admin" class=" w-25 btn btn-primary">Tambah</a>
+
+                        <?php if (get_flash_name('add_success') != ""):?>
+                            <div class="alert alert-success my-3">
+                                <?= get_flash_message('add_success')?>
+                            </div>
+                        <?php endif;?>
+                        <?php if (get_flash_name('add_failed') != ""):?>
+                            <div class="alert alert-danger my-3">
+                                <?= get_flash_message('add_failed')?>
+                            </div>
+                        <?php endif;?>
+
+                        <!-- table of data -->
+                        <div class="table-responsive mt-5">
+                            <table class="table table-striped table-hover table-bordered" id="table-admin">
                                 <thead>
-                                    <tr>
-                                        <th>Username</th>
-                                        <th>Password</th>
-                                        <th>Action</th>
-                                    </tr>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Name</th>
+                                    <th>Aksi</th>
+                                </tr>
                                 </thead>
                                 <tbody>
-                                    <?php foreach (ambil_data_user() as $users):?>
-                                        <tr data-id-users="<?= $users['id']?>">
-                                            <td><?= $users['username']?></td>
-                                            <td><?php 
-                                                    if($users['role']==1){
-                                                        echo "Admin";
-                                                    }if($users['role']==2){
-                                                        echo "Dosen";
-                                                    }if($users['role']==3){
-                                                        echo "Mahasiswa";
-                                                    }
-                                                ?>
-                                            </td>
-                                            <td><a href="ubah-user.php?id=<?=$users['id']?>" class="btn btn-primary">Ubah</a><button data-id="<?=$users['id']?>" class="btn-remove ml-3 btn btn-danger">Hapus</button></td>
-                                        </tr>
-                                    <?php endforeach;?>
+                                <?php $i = 1?>
+                                <?php foreach (ambil_data_admin() as $data):?>
+                                    <tr>
+                                        <td><?= $i++?></td>
+                                        <td><?= $data['username']?></td>
+                                        <td>
+                                            <a href="update-admin.php?halaman=admin&id=<?= $data['id']?>" class="btn btn-warning">Edit</a>
+                                            ||
+                                            <a href="hapus-admin.php?id=<?= $data['id']?>" class="btn btn-danger">Hapus</a>
+                                        </td>
+                                    </tr>
+                                <?php endforeach;?>
                                 </tbody>
                             </table>
                         </div>
-                 </div>
-
+                    </div>
+                </div>
             </div>
+
+
         </div>
         <!-- End of Content Wrapper -->
         <?php include "footer.php"?>
@@ -86,30 +88,14 @@ include "function.php";
         <i class="fas fa-angle-up"></i>
     </a>
 
-    <!-- Logout Modal-->
     <?php include "logout_modal.php"?>
 
     <?php include "js.php"?>
     <script>
         $(document).ready(function () {
-            let tabeluser = $("#table-user").DataTable();
-
-            $(".btn-remove").click(function () {
-                let idUser = $(this).attr('data-id')
-                Swal.fire({
-                    title: 'question',
-                    text: 'Yakin ingin menghapus ?',
-                    showCancelButton: true,
-                    reverseButtons: true
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        window.location.href = 'hapus-user.php?id=' + idUser
-                    }
-                })
-            })
+            $("#table-admin").DataTable()
         })
     </script>
-
+</div>
 </body>
-
 </html>

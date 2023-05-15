@@ -1,9 +1,9 @@
 <?php
 
-   include 'connection.php';
-   include 'helper.php';
+    include 'connection.php';
+    include 'helper.php';
 
-   function create_user($form) {
+    function create_user($form) {
      global $connection;
 
      $username = htmlspecialchars(strtolower(stripcslashes($form['username'])));
@@ -28,7 +28,8 @@
      }
    }
 
-   function tambah_data_tahun($form)
+    /* tahun */
+    function tambah_data_tahun($form)
    {
        global $connection;
 
@@ -51,7 +52,7 @@
 
    }
 
-   function ambiL_data_tahun()
+    function ambiL_data_tahun()
    {
        global $connection; 
        $data = $connection->query("
@@ -65,7 +66,7 @@
        return $data;
    }
 
-   function update_data_tahun($form)
+    function update_data_tahun($form)
    {
        global $connection;
 
@@ -89,15 +90,16 @@
 
    }
 
-   function ambil_tahun_by_id($id)
+    function ambil_tahun_by_id($id)
    {
         global $connection;
 
         return $connection->query("SELECT id, tahun FROM tahun WHERE id= '$id'")->fetch_assoc();
    }
+    /* end of tahun*/
 
-
-   function tambah_data_kecamatan($form)
+    /* Kecamatan */
+    function tambah_data_kecamatan($form)
    {
        global  $connection;
 
@@ -121,7 +123,7 @@
 
    }
 
-   function ambil_data_kecamatan()
+    function ambil_data_kecamatan()
    {
        global  $connection;
 
@@ -135,7 +137,7 @@
        ")->fetch_all(MYSQLI_ASSOC);
    }
 
-   function ambil_kecamatan_by_id($id)
+    function ambil_kecamatan_by_id($id)
    {
        global $connection;
 
@@ -152,7 +154,7 @@
        ")->fetch_assoc();
    }
 
-   function update_data_kecamatan($form)
+    function update_data_kecamatan($form)
    {
        global $connection;
 
@@ -178,3 +180,237 @@
        }
        return redirect('kecamatan.php?halaman=kecamatan');
    }
+    /* end of kecamatan */
+
+    /* admin */
+    function tambah_data_admin($form)
+    {
+        global $connection;
+
+        $username = htmlspecialchars($form['username']);
+        $password = mysqli_escape_string($connection, $form['password']);
+        $has_password = password_hash($password, PASSWORD_DEFAULT);
+
+        $connection->query("
+            INSERT INTO user
+            (username, password)
+            VALUES
+            ('$username', '$has_password')
+        ");
+
+        if ($connection->affected_rows > 0) {
+            set_flash_message('add_success', 'Berhasil menambahkan admin');
+        } else {
+            set_flash_message('add_failed', 'Gagal menambahkan admin');
+        }
+        return redirect('admin.php?halaman=admin');
+
+
+    }
+
+    function ambil_data_admin()
+    {
+        global $connection;
+
+        return $connection->query("
+            SELECT
+            id,
+            username
+            FROM user
+        ")->fetch_all(MYSQLI_ASSOC);
+    }
+
+    function ambil_admin_by_id($id)
+    {
+        global $connection;
+
+        return $connection->query("
+            SELECT
+            id,
+            username
+            FROM user
+            WHERE id = '$id'
+        ")->fetch_assoc();
+    }
+
+    function update_data_admin($form)
+    {
+        global $connection;
+
+        $id = $form['id'];
+        $username = htmlspecialchars($form['username']);
+        if ($form['password'] == null) {
+            $connection->query("
+                UPDATE user
+                SET
+                    username = '$username'
+                WHERE id = '$id'
+            ");
+        } else {
+            $password = mysqli_escape_string($connection, $form['password']);
+            $has_password = password_hash($password, PASSWORD_DEFAULT);
+            $connection->query("
+                UPDATE user
+                SET
+                    username = '$username',
+                    password = '$has_password'
+                WHERE id = '$id'
+            ");
+        }
+
+        if ($connection->affected_rows > 0) {
+            set_flash_message('add_success', 'Berhasil update admin');
+        } else {
+            set_flash_message('add_failed', 'Gagal update admin');
+        }
+        return redirect('admin.php?halaman=admin');
+    }
+    /* end of admin */
+
+    /* jenis */
+    function tambah_data_jenis($form)
+    {
+        global $connection;
+
+        $nama = htmlspecialchars($form['nama']);
+
+        $connection->query("
+            INSERT INTO jenis
+            (nama)
+            VALUES
+            ('$nama')
+        ");
+
+        if ($connection->affected_rows > 0) {
+            set_flash_message('add_success', 'Berhasil menambahkan jenis');
+        } else {
+            set_flash_message('add_failed', 'Gagal menambahkan jenis');
+        }
+        return redirect('jenis.php?halaman=jenis');
+
+    }
+
+    function ambil_data_jenis()
+    {
+        global $connection;
+
+        return $connection->query("
+            SELECT
+                id,
+                nama AS jenis
+            FROM jenis
+        ")->fetch_all(MYSQLI_ASSOC);
+    }
+
+    function ambil_jenis_by_id($id)
+    {
+        global $connection;
+
+        return $connection->query("
+            SELECT
+                id,
+                nama AS jenis
+            FROM jenis
+            WHERE id = '$id'
+        ")->fetch_assoc();
+    }
+
+    function update_data_jenis($form)
+    {
+        global $connection;
+
+        $id = $form['id'];
+        $nama = htmlspecialchars($form['nama']);
+
+        $connection->query("
+            UPDATE jenis
+            SET
+                nama = '$nama'
+            WHERE id = '$id'
+        ");
+
+        if ($connection->affected_rows > 0) {
+            set_flash_message('add_success', 'Berhasil update jenis');
+        } else {
+            set_flash_message('add_failed', 'Gagal update jenis');
+        }
+        return redirect('jenis.php?halaman=jenis');
+    }
+    /* end of jenis*/
+
+    /* ternak */
+    function tambah_data_ternak($form)
+    {
+        global $connection;
+
+        $ternak = htmlspecialchars($form['ternak']);
+        $jenis = $form['jenis'];
+
+        $connection->query("
+            INSERT INTO ternak
+            (ternak, jenis)
+            VALUES
+            ('$ternak', '$jenis')
+        ");
+
+        if ($connection->affected_rows > 0) {
+            set_flash_message('add_success', 'Berhasil menambahkan ternak');
+        } else {
+            set_flash_message('add_failed', 'Gagal menambahkan ternak');
+        }
+        return redirect('ternak.php?halaman=ternak');
+    }
+
+    function ambil_data_ternak()
+    {
+        global $connection;
+
+        return $connection->query("
+            SELECT
+            id,
+            ternak as nama,
+            jenis
+            FROM ternak
+        ")->fetch_all(MYSQLI_ASSOC);
+    }
+
+    function ambil_ternak_by_id($id)
+    {
+        global $connection;
+
+        return $connection->query("
+            SELECT
+            id,
+            ternak as nama,
+            jenis
+            FROM ternak
+            WHERE id = '$id'
+        ")->fetch_assoc();
+    }
+
+    function update_data_ternak($form)
+    {
+        global $connection;
+
+        $id = $form['id'];
+        $ternak = htmlspecialchars($form['ternak']);
+        $jenis = $form['jenis'];
+
+        $connection->query("
+            UPDATE ternak
+            SET
+                ternak = '$ternak',
+                jenis = '$jenis'
+            WHERE id = '$id'
+        ");
+
+        if ($connection->affected_rows > 0) {
+            set_flash_message('add_success', 'Berhasil update ternak');
+        } else {
+            set_flash_message('add_failed', 'Gagal update ternak');
+        }
+        return redirect('ternak.php?halaman=ternak');
+    }
+    /* end of ternak*/
+
+
