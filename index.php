@@ -31,26 +31,45 @@ include "function.php";
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <h1 class="h5 mb-0 text-gray-800 text-center w-100 mt-4">Sistem  Informasi Geografis dan Monitoring Ternak <br> Kabpuaten Bengkayang</h1>
                     </div>
-
-                    <div class="row justify-content-start">
-                        <div class="col-lg-12 col-12 card p-0">
-                            <div class="card-header bg-primary text-white">
-                                Sistem Informasi Geografis dan Monitoring Ternak Kabupaten Bengkayang
+                    <?php if(!isset($_SESSION['login'])):?>
+                        <div class="row justify-content-start">
+                            <div class="col-lg-12 col-12 card p-0">
+                                <div class="card-header bg-primary text-white">
+                                    Sistem Informasi Geografis dan Monitoring Ternak Kabupaten Bengkayang
+                                </div>
+                                <div class="card-body">
+                                    <p>Lorem Ipsum</p>
+                                </div>
                             </div>
-                            <div class="card-body">
-                                <p>Lorem Ipsum</p>
+                            <div class="col-lg-12 col-12 card p-0">
+                                <div class="card-header bg-primary text-white">
+                                    Data Geografis Kabupaten Bengkayang
+                                </div>
+                                <div class="card-body">
+                                    <div class="w-100" style="height: 512px" id="map"></div>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-lg-12 col-12 card p-0">
-                            <div class="card-header bg-primary text-white">
-                                Data Geografis Kabupaten Bengkayang
+                    <?php endif;?>
+                    <?php if(isset($_SESSION['login'])):?>
+                        <div class="card card-body">
+                        <div class="justify-content-center row ">
+                            <div class="my-2 mx-4 card card-body col-lg-12">
+                                <h5>SELAMAT DATANG ADMIN</h5>
                             </div>
-                            <div class="card-body">
-                                <div class="w-100" style="height: 512px" id="map"></div>
+                            <div class=" card card-body col-lg-6">
+                                <h5>Mahasiswa</h5>
+                                <a href="mahasiswa.php">More Info</a>
+                            </div>
+                            <div class=" card card-body col-lg-6">
+                                <h5>User</h5>
+                                <a href="user.php">More Info</a>
                             </div>
                         </div>
                     </div>
-                </div>
+                    <?php endif;?>
+                    
+                 </div>
 
 
             </div>

@@ -22,13 +22,10 @@
 
             <!-- Nav Item - Dashboard -->
         
-            <li class="nav-item <?php if ((isset($_GET['halaman']) && $_GET['halaman'] == 'beranda') || isset($_GET['halaman']) == false) :?> active <?php endif;?>">
-                <a class="nav-link" href="index.php?halaman=beranda">
-                    <span>Beranda</span>
-                </a>
-            </li>
-        <?php if($_SESSION['login']== true):?>
+            
+        <?php if(isset($_SESSION['login'])):?>
             <!-- nav untuk non admin -->
+            
             <li class="nav-item <?php if ((isset($_GET['halaman']) && $_GET['halaman'] == 'admin') || isset($_GET['halaman']) == false) :?> active <?php endif;?>">
                 <a class="nav-link" href="admin.php?halaman=admin">
                     <span>Admin</span>
@@ -59,7 +56,7 @@
                 </a>
             </li>
 
-            <li class="nav-item <?php if ((isset($_GET['halaman']) && $_GET['halaman'] == 'peternak]an') || isset($_GET['halaman']) == false) :?> active <?php endif;?>">
+            <li class="nav-item <?php if ((isset($_GET['halaman']) && $_GET['halaman'] == 'peternakan') || isset($_GET['halaman']) == false) :?> active <?php endif;?>">
                 <a class="nav-link" href="peternakan.php?halaman=peternakan">
                     <span>Peternakan</span>
                 </a>
@@ -71,7 +68,17 @@
                 </a>
             </li>
         <?php endif;?>
-        <?php if($_SESSION['login']== false):?>
+        <?php if(!isset($_SESSION['login'])):?>
+            <li class="nav-item <?php if ((isset($_GET['halaman']) && $_GET['halaman'] == 'beranda') || isset($_GET['halaman']) == false) :?> active <?php endif;?>">
+                <a class="nav-link" href="index.php?halaman=beranda">
+                    <span>Beranda</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="login.php">
+                    <span>Login</span>
+                </a>
+            </li>
         <?php endif;?>
 
             <!-- Sidebar Toggler (Sidebar) -->
