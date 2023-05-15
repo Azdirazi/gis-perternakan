@@ -40,7 +40,7 @@
 						<label class="form-label" for="password">Password</label>
 						<input class="form-control" type="password" id="password" name="password">
 					</div>
-					<a href="register.php" class="mb-2"> Belum Punya Akun ? Register Di Sini</a>
+					<a href="registrasi.php" class="mb-2"> Belum Punya Akun ? Register Di Sini</a>
 					<button class="btn btn-primary" type="submit">Login</button>
 					</div>
 				</div>

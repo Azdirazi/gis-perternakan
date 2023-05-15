@@ -27,7 +27,7 @@
                     <span>Beranda</span>
                 </a>
             </li>
-        <?php if($_SESSION['login']== true):?>
+        <?php if($_SESSION['login']!= NULl):?>
             <!-- nav untuk non admin -->
             <li class="nav-item <?php if ((isset($_GET['halaman']) && $_GET['halaman'] == 'admin') || isset($_GET['halaman']) == false) :?> active <?php endif;?>">
                 <a class="nav-link" href="admin.php?halaman=admin">
@@ -62,6 +62,12 @@
             <li class="nav-item <?php if ((isset($_GET['halaman']) && $_GET['halaman'] == 'peternak]an') || isset($_GET['halaman']) == false) :?> active <?php endif;?>">
                 <a class="nav-link" href="peternakan.php?halaman=peternakan">
                     <span>Peternakan</span>
+                </a>
+            </li>
+            <li class="nav-item ">
+                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                     Logout
                 </a>
             </li>
         <?php endif;?>
