@@ -53,8 +53,7 @@
 
    function ambiL_data_tahun()
    {
-       global $connection;
-
+       global $connection; 
        $data = $connection->query("
             SELECT
                 id,
