@@ -27,7 +27,7 @@
                     <span>Beranda</span>
                 </a>
             </li>
-        <?php if($_SESSION['login']!= NULl):?>
+        <?php if(isset($_SESSION['login'])):?>
             <!-- nav untuk non admin -->
             <li class="nav-item <?php if ((isset($_GET['halaman']) && $_GET['halaman'] == 'admin') || isset($_GET['halaman']) == false) :?> active <?php endif;?>">
                 <a class="nav-link" href="admin.php?halaman=admin">
