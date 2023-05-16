@@ -33,7 +33,7 @@ include "function.php";
 
                 <div class="row justify-content-start">
                     <div class="col-lg-12 col-sm-12 card card-body">
-                        <a href="tambah-jenis.php?halaman=jenis" class=" w-25 btn btn-primary">Tambah</a>
+                        <a href="tambah-peternakan.php?halaman=peternakan" class=" w-25 btn btn-primary">Tambah</a>
 
                         <?php if (get_flash_name('add_success') != ""):?>
                             <div class="alert alert-success my-3">
@@ -54,23 +54,21 @@ include "function.php";
                                 <tr>
                                     <th>No</th>
                                     <th>Tahun</th>
-                                    <th>Kecamatan</th>
                                     <th>jenis</th>
                                     <th>Aksi</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <?php $i = 1?>
-                                <?php foreach (ambil_data_jenis() as $data):?>
+                                <?php foreach (ambil_data_peternakan() as $data):?>
                                     <tr>
                                         <td><?= $i++?></td>
                                         <th><?= $data['tahun']?></th>
-                                        <th><?= $data['kecamatan']?></th>
                                         <td><?= $data['jenis']?></td>
                                         <td>
-                                            <a href="update-jenis.php?halaman=jenis&id=<?= $data['id']?>" class="btn btn-warning">Edit</a>
+                                            <a href="update-peternakan.php?halaman=peternakan&id_jenis=<?= $data['id_jenis']?>&id_tahun<?= $data['id_tahun']?>" class="btn btn-warning">Edit</a>
                                             ||
-                                            <a href="hapus-jenis.php?id=<?= $data['id']?>" class="btn btn-danger">Hapus</a>
+                                            <a href="hapus-peternakan.php?id_jenis=<?= $data['id_jenis']?>&id_tahun<?= $data['id_tahun']?>" class="btn btn-danger">Hapus</a>
                                         </td>
                                     </tr>
                                 <?php endforeach;?>

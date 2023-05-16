@@ -435,4 +435,61 @@ function login($form) {
     }
     /* end of ternak*/
 
+    /* peternakan */
+    function tambah_data_peternakan($form, $tahun, $jenis)
+    {
+        global $connection;
+        try {
+            $id_kecamatan = $form['id-kecamatan'];
+            $i = 0;
+            foreach ($id_kecamatan as $kecamatan ) {
+                $j  = 0;
+                $jumlah_ternak = $form['jumlah-ke-'.$i];
+                foreach ($jumlah_ternak as $jumlah) {
+                    $id_ternak = $form['id-ternak'][$j];
+                    $connection->query("
+                        INSERT INTO peternakan
+                        (id_kecamatan, id_ternak, id_tahun, id_jenis, jumlah_ternak)
+                        VALUES
+                        ('$kecamatan', '$id_ternak', '$tahun', '$jenis', $jumlah)
+                    ");
+                    $j++;
+                }
+                $i++;
+            }
+
+            set_flash_message('add_success', 'Berhasil menambahkan ternak');
+        }catch (Throwable $e) {
+            set_flash_message('add_success', 'Berhasil menambahkan ternak');
+        }
+        return redirect('peternakan.php?halaman=peternakan');
+    }
+
+    function ambil_data_peternakan()
+    {
+        global $connection;
+
+        return $connection->query("
+            SELECT
+                tahun.tahun AS tahun, 
+                jenis.nama AS jenis, 
+                peternakan.id_tahun AS id_tahun, 
+                peternakan.id_jenis AS id_jenis
+            FROM
+                peternakan
+                INNER JOIN
+                tahun
+                ON 
+                    peternakan.id_tahun = tahun.id
+                INNER JOIN
+                jenis
+                ON 
+                    peternakan.id_jenis = jenis.id
+            GROUP BY
+                peternakan.id_tahun, 
+                peternakan.id_jenis
+        ")->fetch_all(MYSQLI_ASSOC);
+    }
+    /* end of peternakan */
+
 
