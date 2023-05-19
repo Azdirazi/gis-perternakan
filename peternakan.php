@@ -66,9 +66,9 @@ include "function.php";
                                         <th><?= $data['tahun']?></th>
                                         <td><?= $data['jenis']?></td>
                                         <td>
-                                            <a href="update-peternakan.php?halaman=peternakan&id_jenis=<?= $data['id_jenis']?>&id_tahun<?= $data['id_tahun']?>" class="btn btn-warning">Edit</a>
+                                            <a href="update-peternakan.php?halaman=peternakan&jenis=<?= $data['id_jenis']?>&tahun=<?= $data['id_tahun']?>" class="btn btn-warning">Edit</a>
                                             ||
-                                            <a href="hapus-peternakan.php?id_jenis=<?= $data['id_jenis']?>&id_tahun<?= $data['id_tahun']?>" class="btn btn-danger">Hapus</a>
+                                            <a href="hapus-peternakan.php?id_jenis=<?= $data['id_jenis']?>&id_tahun=<?= $data['id_tahun']?>" class="btn btn-danger">Hapus</a>
                                         </td>
                                     </tr>
                                 <?php endforeach;?>

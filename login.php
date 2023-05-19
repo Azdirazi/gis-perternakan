@@ -7,7 +7,7 @@
 	}
 
 	if(isset($_SESSION['login'])){
-		redirect('index.php');
+		redirect('index.php?halaman=beranda');
 	}
 ?>
 <!DOCTYPE html>

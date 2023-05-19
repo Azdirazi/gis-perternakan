@@ -8,7 +8,7 @@ include "function.php";
 
     <?php include "head.php"?>
 
-    <title>jenis</title>
+    <title>Jenis</title>
 
     <?php include "css.php"?>
 </head>

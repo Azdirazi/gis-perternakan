@@ -490,6 +490,39 @@ function login($form) {
                 peternakan.id_jenis
         ")->fetch_all(MYSQLI_ASSOC);
     }
+
+    function update_data_peternakan($form,$tahun,$jenis, $tahun_lama)
+    {
+        global $connection;
+        try {
+            $id_kecamatan = $form['id-kecamatan'];
+            $i = 0;
+            $tahun_lama = $tahun_lama;
+            foreach ($id_kecamatan as $kecamatan ) {
+                $j  = 0;
+                $jumlah_ternak = $form['jumlah-ke-'.$i];
+                foreach ($jumlah_ternak as $jumlah) {
+                    $id_ternak = $form['id-ternak'][$j];
+                    $connection->query("
+                        UPDATE peternakan 
+                        SET  
+                        id_tahun ='$tahun',
+                        id_jenis = '$jenis'
+                        WHERE id_tahun ='$tahun_lama'
+                    ");
+                    $j++;
+                }
+                $i++;
+            }
+
+            set_flash_message('add_success', 'Berhasil menambahkan ternak');
+        }catch (Throwable $e) {
+            set_flash_message('add_success', 'Berhasil menambahkan ternak');
+        }
+        return redirect('peternakan.php?halaman=peternakan');
+    }
+
+    
     /* end of peternakan */
 
 

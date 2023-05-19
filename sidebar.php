@@ -80,8 +80,8 @@
             </li>
         <?php endif;?>
         <?php if(!isset($_SESSION['login'])):?>
-            <li class="nav-item">
-                <a class="nav-link" href="#">
+            <li class="nav-item <?php if ((isset($_GET['halaman']) && $_GET['halaman'] == 'grafik') || isset($_GET['halaman']) == false) :?> active <?php endif;?>">
+                <a class="nav-link"  href="grafik.php?halaman=grafik">
                     <i class="fa-sharp fa-solid fa-chart-simple"></i>
                     <span>Grafik</span>
                 </a>
