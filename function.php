@@ -465,6 +465,26 @@ function login($form) {
         return redirect('peternakan.php?halaman=peternakan');
     }
 
+    function ambil_data_jumlah_ternak($id_jenis,$id_tahun, $id_kecamatan)
+    {
+        global $connection;
+
+        return $connection->query("
+            SELECT
+                peternakan.id_kecamatan AS id_kecamatan, 
+                peternakan.id_ternak AS id_ternak, 
+                peternakan.id_tahun AS id_tahun, 
+                peternakan.id_jenis AS id_jenis, 
+                peternakan.jumlah_ternak AS jumlah_ternak
+            FROM
+                peternakan
+            WHERE
+                peternakan.id_tahun = '$id_tahun' AND
+                peternakan.id_jenis = '$id_jenis' AND
+                peternakan.id_kecamatan = '$id_kecamatan'
+        ")->fetch_all(MYSQLI_ASSOC);
+    }
+
     function ambil_data_peternakan()
     {
         global $connection;
@@ -491,35 +511,34 @@ function login($form) {
         ")->fetch_all(MYSQLI_ASSOC);
     }
 
-    function update_data_peternakan($form,$tahun,$jenis, $tahun_lama)
+    function update_data_peternakan($form)
     {
         global $connection;
-        try {
-            $id_kecamatan = $form['id-kecamatan'];
-            $i = 0;
-            $tahun_lama = $tahun_lama;
-            foreach ($id_kecamatan as $kecamatan ) {
-                $j  = 0;
-                $jumlah_ternak = $form['jumlah-ke-'.$i];
-                foreach ($jumlah_ternak as $jumlah) {
-                    $id_ternak = $form['id-ternak'][$j];
-                    $connection->query("
-                        UPDATE peternakan 
-                        SET  
-                        id_tahun ='$tahun',
-                        id_jenis = '$jenis'
-                        WHERE id_tahun ='$tahun_lama'
-                    ");
-                    $j++;
-                }
-                $i++;
+
+        $id_kecamatan = $form['id-kecamatan'];
+        $i = 0;
+        $tahun_sebelum = $form['tahun-sebelum'];
+        $jenis_sebelum = $form['jenis-sebelum'];
+        foreach ($id_kecamatan as $kecamatan ) {
+            $j  = 0;
+            $jumlah_ternak = $form['jumlah-ke-'.$i];
+            foreach ($jumlah_ternak as $jumlah) {
+                $id_ternak = $form['id-ternak'][$j];
+                $jumlah = $jumlah_ternak[$j];
+                var_dump($jumlah);
+                $j++;
             }
+            $i++;
+        }
+
+        /*try {
+
 
             set_flash_message('add_success', 'Berhasil menambahkan ternak');
         }catch (Throwable $e) {
             set_flash_message('add_success', 'Berhasil menambahkan ternak');
         }
-        return redirect('peternakan.php?halaman=peternakan');
+        return redirect('peternakan.php?halaman=peternakan');*/
     }
 
     

@@ -3,7 +3,7 @@ session_start();
 include "function.php";
 
 if (isset($_POST['tambah-data'])) {
-    update_data_peternakan($_POST, $_GET['tahun'], $_GET['jenis'],$_GET['tahun']);
+    update_data_peternakan($_POST);
 }
 
 ?>
@@ -33,11 +33,13 @@ if (isset($_POST['tambah-data'])) {
             <!-- Begin Page Content -->
             <div class="container-fluid">
                 <div class="card card-body w-100 mt-5">
-                    <form action="" method="get">
-                         <input type="hidden" name="tahun-sebelum" value="<?= $_GET['tahun']?>">
+                    <form action="" method="POST">
+
+                        <input type="hidden" name="tahun-sebelum" value="<?= $_GET['tahun']?>">
+                        <input type="hidden" name="jenis-sebelum" value="<?= $_GET['jenis']?>">
                         <div class="form-group">
                             <label for="tahun" class="form-label">Tahunn</label>
-                            <select name="tahun" id="tahun" class="form-control" required>
+                            <select name="tahun" id="tahun" class="form-control" required disabled>
                                 <option value="" <?php if (isset($_GET['tahun']) && isset($_GET['jenis'])):?>selected <?php endif;?>>--- Pilih Tahun ---</option>
                                 <?php foreach (ambiL_data_tahun() as $tahun):?>
                                     <option value="<?= $tahun['id']?>" <?php if (((isset($_GET['tahun']) && isset($_GET['jenis'])) == true) && ($_GET['tahun'] == $tahun['id'])):?>selected <?php endif;?>><?= $tahun['tahun']?></option>
@@ -46,17 +48,15 @@ if (isset($_POST['tambah-data'])) {
                         </div>
                         <div class="form-group">
                             <label for="jenis" class="form-label">Jenis</label>
-                            <select name="jenis" id="jenis" class="form-control" required>
+                            <select name="jenis" id="jenis" class="form-control" required disabled>
                                 <option value="" <?php if (isset($_GET['tahun']) && isset($_GET['jenis'])):?>selected <?php endif;?>>--- Pilih Jenis ---</option>
                                 <?php foreach (ambil_data_jenis() as $jenis):?>
                                     <option value="<?= $jenis['id']?>" <?php if (((isset($_GET['tahun']) && isset($_GET['jenis'])) == true) && ($_GET['jenis'] == $jenis['id'])):?>selected <?php endif;?>><?= $jenis['jenis']?></option>
                                 <?php endforeach;?>
                             </select>
                         </div>
-                    </form>
-                    <?php if (isset($_GET['tahun']) && isset($_GET['jenis'])):?>
-                        <div class="table-responsive mt-5">
-                            <form action="" method="POST">
+                        <?php if (isset($_GET['tahun']) && isset($_GET['jenis'])):?>
+                            <div class="table-responsive mt-5">
                                 <table class="table table-striped table-hover table-bordered">
                                     <thead>
                                     <tr>
@@ -77,8 +77,8 @@ if (isset($_POST['tambah-data'])) {
                                                 <?= $kecamatan['nama']?>
                                                 <input type="hidden" name="id-kecamatan[]" value="<?= $kecamatan['id']?>">
                                             </td>
-                                            <?php foreach (ambil_data_ternak() as $ternak):?>
-                                                <td><input type="text" name="jumlah-ke-<?=$i?>[]" class="form-control" required></td>
+                                            <?php foreach (ambil_data_jumlah_ternak($_GET['jenis'], $_GET['tahun'], $kecamatan['id']) as $ternak):?>
+                                                <td><input type="text" name="jumlah-ke-<?=$i?>[]" value="<?= $ternak['jumlah_ternak']?>" class="form-control" required></td>
                                             <?php endforeach;?>
                                         </tr>
                                         <?php $i++?>
@@ -89,9 +89,9 @@ if (isset($_POST['tambah-data'])) {
                                     <button type="submit" name="tambah-data" class="btn btn-primary mr-2">Ok</button>
                                     <button type="reset" class="btn btn-light border border-1 ">Batal</button>
                                 </div>
-                            </form>
-                        </div>
-                    <?php endif;?>
+                            </div>
+                        <?php endif;?>
+                    </form>
                 </div>
             </div>
 
