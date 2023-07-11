@@ -458,6 +458,65 @@ function login($form) {
                 $i++;
             }
 
+            // asumsi update telah usai
+            // mencari nilai tertinggi tiap jenis, ternak, dam tahun
+            $data_max = [];
+            foreach ($form['id-ternak'] as $id_ternak) {
+                $data_tertinggi =$connection->query("
+                        SELECT
+                            MAX(jumlah_ternak) as data_tertinggi
+                        FROM
+                            peternakan
+                        WHERE
+                            peternakan.id_tahun =  '$tahun'
+                            AND
+                            peternakan.id_ternak = '$id_ternak'
+                            AND 
+                            peternakan.id_jenis = '$jenis'
+                            
+                    ")->fetch_assoc();
+                $data_max[] = $data_tertinggi['data_tertinggi'];
+            }
+
+            // hitung nilai normalisasi
+            foreach ($id_kecamatan as $kecamatan ) {
+                $j = 0;
+                // ambil data ternak
+                foreach ($data_max as $max) {
+                    $id_ternak = $form['id-ternak'][$j];
+                    // ambil data
+                    $jumlah_ternak = $connection->query("
+                        SELECT jumlah_ternak 
+                        FROM peternakan
+                        where 
+                            id_ternak = '$id_ternak'
+                            AND
+                            id_tahun = '$tahun'
+                            AND 
+                            id_jenis = '$jenis'
+                            AND
+                            id_kecamatan = '$kecamatan'
+                    ")->fetch_assoc();
+                    // hitung normalisasi
+                    $nilai_normal = round($jumlah_ternak['jumlah_ternak'] / $max, 4 );
+
+                    // update data
+                    $connection->query("
+                        UPDATE peternakan SET
+                            normalisasi = '$nilai_normal'
+                        where 
+                            id_ternak = '$id_ternak'
+                            AND
+                            id_tahun = '$tahun'
+                            AND 
+                            id_jenis = '$jenis'
+                            AND
+                            id_kecamatan = '$kecamatan'
+                    ");
+                    $j++;
+                }
+            }
+
             set_flash_message('add_success', 'Berhasil menambahkan ternak');
         }catch (Throwable $e) {
             set_flash_message('add_success', 'Berhasil menambahkan ternak');
@@ -515,30 +574,101 @@ function login($form) {
     {
         global $connection;
 
-        $id_kecamatan = $form['id-kecamatan'];
-        $i = 0;
-        $tahun_sebelum = $form['tahun-sebelum'];
-        $jenis_sebelum = $form['jenis-sebelum'];
-        foreach ($id_kecamatan as $kecamatan ) {
-            $j  = 0;
-            $jumlah_ternak = $form['jumlah-ke-'.$i];
-            foreach ($jumlah_ternak as $jumlah) {
-                $id_ternak = $form['id-ternak'][$j];
-                $jumlah = $jumlah_ternak[$j];
-                var_dump($jumlah);
-                $j++;
+        try {
+            $id_kecamatan = $form['id-kecamatan'];
+            $i = 0;
+            $tahun_sebelum = $form['tahun-sebelum'];
+            $jenis_sebelum = $form['jenis-sebelum'];
+
+            foreach ($id_kecamatan as $kecamatan ) {
+                $j = 0;
+                $jumlah_ternak = $form['jumlah-ke-'.$i];
+                foreach ($jumlah_ternak as $jumlah) {
+                    $id_ternak = $form['id-ternak'][$j];
+                    $jumlah = $jumlah_ternak[$j];
+                    $connection->query("
+                        UPDATE peternakan SET
+                        jumlah_ternak = '$jumlah'
+                        where 
+                            id_ternak = '$id_ternak'
+                            AND
+                            id_tahun = '$tahun_sebelum'
+                            AND 
+                            id_jenis = '$jenis_sebelum'
+                            AND
+                            id_kecamatan = '$kecamatan'
+                    ");
+                    $j++;
+                }
+                $i++;
             }
-            $i++;
-        }
 
-        /*try {
+            // asumsi update telah usai
+            // mencari nilai tertinggi tiap jenis, ternak, dam tahun
+            $data_max = [];
+            foreach ($form['id-ternak'] as $id_ternak) {
+                $data_tertinggi =$connection->query("
+                        SELECT
+                            MAX(jumlah_ternak) as data_tertinggi
+                        FROM
+                            peternakan
+                        WHERE
+                            peternakan.id_tahun =  '$tahun_sebelum'
+                            AND
+                            peternakan.id_ternak = '$id_ternak'
+                            AND 
+                            peternakan.id_jenis = '$jenis_sebelum'
+                            
+                    ")->fetch_assoc();
+                $data_max[] = $data_tertinggi['data_tertinggi'];
+            }
 
+            // hitung nilai normalisasi
+            foreach ($id_kecamatan as $kecamatan ) {
+                $j = 0;
+                // ambil data ternak
+                foreach ($data_max as $max) {
+                    $id_ternak = $form['id-ternak'][$j];
+                    // ambil data
+                    $jumlah_ternak = $connection->query("
+                        SELECT jumlah_ternak 
+                        FROM peternakan
+                        where 
+                            id_ternak = '$id_ternak'
+                            AND
+                            id_tahun = '$tahun_sebelum'
+                            AND 
+                            id_jenis = '$jenis_sebelum'
+                            AND
+                            id_kecamatan = '$kecamatan'
+                    ")->fetch_assoc();
+                    // hitung normalisasi
+                    $nilai_normal = round($jumlah_ternak['jumlah_ternak'] / $max, 4 );
 
-            set_flash_message('add_success', 'Berhasil menambahkan ternak');
+                    // update data
+                    $connection->query("
+                        UPDATE peternakan SET
+                            normalisasi = '$nilai_normal'
+                        where 
+                            id_ternak = '$id_ternak'
+                            AND
+                            id_tahun = '$tahun_sebelum'
+                            AND 
+                            id_jenis = '$jenis_sebelum'
+                            AND
+                            id_kecamatan = '$kecamatan'
+                    ");
+                    $j++;
+                }
+            }
+
+            // hitung nilai normalisasi
+
+            set_flash_message('add_success', 'Berhasil update ternak');
         }catch (Throwable $e) {
-            set_flash_message('add_success', 'Berhasil menambahkan ternak');
+            set_flash_message('add_success', 'Gagal  update ternak');
         }
-        return redirect('peternakan.php?halaman=peternakan');*/
+        return redirect('peternakan.php?halaman=peternakan');
     }
 
     

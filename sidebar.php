@@ -72,6 +72,14 @@
                     <span>Peternakan</span>
                 </a>
             </li>
+
+            <li class="nav-item <?php if ((isset($_GET['halaman']) && $_GET['halaman'] == 'keterangan') || isset($_GET['halaman']) == false) :?> active <?php endif;?>">
+                <a class="nav-link" href="keterangan.php?halaman=keterangan">
+                    <i class="fa-solid fa-clipboard-list"></i>
+                    <span>Keterangan</span>
+                </a>
+            </li>
+
             <li class="nav-item ">
                 <a class="nav-link" href="#" data-toggle="modal" data-target="#logoutModal">
                     <i class="fas fa-sign-out-alt fa-sm fa-fw  text-gray-400"></i>
