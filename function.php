@@ -880,4 +880,44 @@ function login($form) {
         return $data_group;
     }
 
+    /* Olah data keterangan */
+    function tambah_data_keterangan($form,$tahun, $jenis)
+    {
+        global $connection;
+
+        $cluster_1 = $form['cluster-0'];
+        $cluster_2 = $form['cluster-1'];
+        $cluster_3 = $form['cluster-2'];
+
+        $connection->query("INSERT INTO keterangan (id_tahun, id_jenis, c1, c2, c3) VALUES ('$tahun', '$jenis', '$cluster_1', '$cluster_2', '$cluster_3')");
+        set_flash_message('add_success', 'Berhasil menambahkan ternak');
+        return redirect('keterangan.php?halaman=keterangan');
+    }
+
+    function ambil_data_keterangan()
+    {
+        global $connection;
+
+        return $connection->query("
+            SELECT
+                keterangan.c1 AS c1, 
+                keterangan.c2 AS c2, 
+                keterangan.c3 AS c3, 
+                jenis.nama AS nama_jenis, 
+                tahun.tahun AS tahun, 
+                keterangan.id AS id_keterangan
+            FROM
+                keterangan
+                INNER JOIN
+                tahun
+                ON 
+                    keterangan.id_tahun = tahun.id
+                INNER JOIN
+                jenis
+                ON 
+                    keterangan.id_jenis = jenis.id
+        ")->fetch_all(MYSQLI_ASSOC);
+    }
+    /* End of olah data keterangan */
+
 

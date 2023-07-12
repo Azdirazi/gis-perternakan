@@ -1,6 +1,11 @@
 <?php
 session_start();
 include "function.php";
+
+if (isset($_POST['tambah-data'])) {
+    tambah_data_keterangan($_POST, $_GET['tahun'], $_GET['jenis']);
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -58,7 +63,58 @@ include "function.php";
                                 </div>
                             </form>
                         </div>
-                        <?php hitung_k_means($_GET['tahun'], $_GET['jenis']);?>
+                        <div class="card card-body border">
+                            <form action="" method="POST">
+                                <?php if (isset($_GET['tahun']) && isset($_GET['jenis'])):?>
+                                    <?php $hasil_perhitungan = hitung_k_means($_GET['tahun'], $_GET['jenis']);?>
+                                    <div class="table-responsive">
+                                        <table class="table table-striped table-hover">
+                                            <thead>
+                                            <tr>
+                                                <th>Kelompok</th>
+                                                <th>Keterangan</th>
+                                                <th>Kesimpulan</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <?php $i= 0;?>
+                                            <?php foreach ($hasil_perhitungan[1] as $perhitungan):?>
+                                                <tr class="align-middle">
+                                                    <?php if ($i == 0):?>
+                                                        <td><span class="badge badge-pill badge-danger">Cluster 1</span></td>
+                                                    <?php endif;?>
+                                                    <?php if ($i == 1):?>
+                                                        <td><span class="badge badge-pill badge-success">Cluster 2</span></td>
+                                                    <?php endif;?>
+                                                    <?php if ($i == 2):?>
+                                                        <td><span class="badge badge-pill badge-primary">Cluster 3</span></td>
+                                                    <?php endif;?>
+
+                                                    <td class="small">
+                                                        <?php foreach ($perhitungan as $keterangan):?>
+                                                            <?= $keterangan['nama_ternak']?> [<?= $keterangan['nilai_normalisasi']?>]
+                                                            <br>
+                                                        <?php endforeach;?>
+                                                    </td>
+
+                                                    <td>
+                                                        <select name="cluster-<?= $i?>"  class="form-control" required>
+                                                            <option value="" selected>----- Pilih Keputusan -----</option>
+                                                            <option value="Kelompok Tinggi">Kelompok Tinggi</option>
+                                                            <option value="Kelompok Rendah">Kelompok Rendah</option>
+                                                            <option value="Kelompok Sedang">Kelompok Sedang</option>
+                                                        </select>
+                                                    </td>
+                                                </tr>
+                                                <?php $i++;?>
+                                            <?php endforeach;?>
+                                            </tbody>
+                                        </table>
+                                        <button class="btn btn-primary" name="tambah-data">Tambah</button>
+                                    </div>
+                                <?php endif;?>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>

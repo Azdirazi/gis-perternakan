@@ -62,6 +62,19 @@ include "function.php";
                                 </tr>
                                 </thead>
                                 <tbody>
+                                    <?php $i = 1;?>
+                                    <?php foreach (ambil_data_keterangan() as $keterangan):?>
+                                    <tr>
+                                        <td><?= $i?></td>
+                                        <td><?= $keterangan['tahun']?></td>
+                                        <td><?= $keterangan['nama_jenis']?></td>
+                                        <td><?= $keterangan['c1']?></td>
+                                        <td><?= $keterangan['c2']?></td>
+                                        <td><?= $keterangan['c3']?></td>
+                                        <td><a href="hapus-keterangan.php?id=<?=$keterangan['id_keterangan']?>" class="btn btn-danger">Hapus</a></td>
+                                    </tr>
+                                    <?php $i++;?>
+                                    <?php endforeach;?>
                                 </tbody>
                             </table>
                         </div>
