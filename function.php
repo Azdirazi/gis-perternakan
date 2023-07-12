@@ -681,44 +681,154 @@ function login($form) {
 
         // ambil centroid awal data 1 2 3
         $centroid = centroid_awal($group_kecamatan);
-        $data_cluster = [];
-        // hitung centroid karna ada 3
-        for ($i = 0; $i < 3; $i++) {
-            // hitung eucledian distance
-            $cluster_temp = [];
-            $indek_kecamatan = 0;
-            foreach ($group_kecamatan as $kecamatan) {
-                $jarak =0;
-                $indek_nilai_normal = 0;
-                foreach ($kecamatan  as $data) {
-                    $jarak += pow($data['nilai_normalisasi'] - $centroid[$i][$indek_nilai_normal]['nilai_normalisasi'], 2);
-                    $indek_nilai_normal++;
+        $kelas_lama = [];
+        $is_valid = false;
+        $is_process = true;
+
+        while ($is_process == true) {
+            $data_cluster = [];
+            $kelas_baru = [];
+            // hitung centroid karna ada 3
+            for ($i = 0; $i < 3; $i++) {
+                // hitung eucledian distance
+                $cluster_temp = [];
+                $indek_kecamatan = 0;
+                foreach ($group_kecamatan as $kecamatan) {
+                    $jarak =0;
+                    $indek_nilai_normal = 0;
+                    foreach ($kecamatan  as $data) {
+                        $jarak += pow($data['nilai_normalisasi'] - $centroid[$i][$indek_nilai_normal]['nilai_normalisasi'], 2);
+                        $indek_nilai_normal++;
+                    }
+                    /*
+                     * Tambahkan jarak / centroid ke dalam group_kecamatan
+                     * */
+                    $centro = round(sqrt($jarak), 4);
+                    $data =
+                        [
+                            'id_kecamatan' => $group_kecamatan[$indek_kecamatan][0]['id_kecamatan'],
+                            'centroid' => 'C'.$i +1,
+                            'nilai_centroid' => $centro
+                        ];
+
+                    $cluster_temp[] = $data;
+                    $indek_kecamatan++;
                 }
-                /*
-                 * Tambahkan jarak / centroid ke dalam group_kecamatan
-                 * */
-                $centro = round(sqrt($jarak), 4);
-                $data =
-                    [
-                        'id_kecamatan' => $group_kecamatan[$indek_kecamatan][0]['id_kecamatan'],
-                        'centroid' => 'C'.$i +1,
-                        'nilai_centroid' => $centro
-                    ];
+                $data_cluster[] = $cluster_temp;
+            };
 
-                $cluster_temp[] = $data;
-                $indek_kecamatan++;
+            // ambil nilai minimum karna ada 3 centroid maka
+            $total_data = count($data_cluster[0]);
+            // untuk mencari min
+            for ($i = 0; $i < $total_data; $i++){
+                $min = min($data_cluster[0][$i]['nilai_centroid'], $data_cluster[1][$i]['nilai_centroid'], $data_cluster[2][$i]['nilai_centroid']);
+                $kelas = "";
+                if ($data_cluster[0][$i]['nilai_centroid'] == $min) {
+                    $kelas = "C1";
+                }
+                if ($data_cluster[1][$i]['nilai_centroid'] == $min) {
+                    $kelas = "C2";
+                }
+                if ($data_cluster[2][$i]['nilai_centroid'] == $min) {
+                    $kelas = "C3";
+                }
+                $kelas_baru[] = [
+                    'minimum' => $min,
+                    'id_kecamatan' => $data_cluster[0][$i]['id_kecamatan'],
+                    'kelas' => $kelas
+                ];
             }
-            $data_cluster[] = $cluster_temp;
+            // check apakah Centroid lama == centroid baru
+            if (count($kelas_lama) > 0 ) {
+                $total_valid = 0;
+                $total_data= count($kelas_lama);
+                for ($i = 0; $i < $total_data; $i++) {
+                    if ($kelas_lama[$i]['kelas'] == $kelas_baru[$i]['kelas']) {
+                        $total_valid++;
+                    }
+                }
+                if ($total_valid == $total_data) {
+                    $is_valid = true;
+                    $is_process = false;
+                    $kelas_lama = $kelas_baru;
+                }
+            } else {
+                $kelas_lama = $kelas_baru;
+                // generate centroid baru
+                $centroid = centroid_baru($kelas_lama, $tahun, $jenis);
+            }
+        }
+        return [$kelas_lama, $centroid];
+    }
+
+    function centroid_baru ($kelas, $tahun, $jenis)
+    {
+        global $connection;
+        $label = ['C1', 'C2', 'C3'];
+        $data_id_kecamatan = [];
+        $data_kecamatan = [];
+        // kategorikan setiap kelas
+        for ($i = 0; $i < 3; $i++) {
+            $temp = [];
+            foreach ($kelas as $data) {
+                if ($data['kelas'] == $label[$i]) {
+                    $temp[] = $data['id_kecamatan'];
+                }
+            }
+            $data_id_kecamatan[] = $temp;
         }
 
-        // ambil nilai minimum karna ada 3 centroid maka
-        $minimum = [];
-        $total_data = count($data_cluster[0]);
-        for ($i = 0; $i < $total_data; $i++){
-            $minimum[] = min($data_cluster[0][$i]['nilai_centroid'], $data_cluster[1][$i]['nilai_centroid'], $data_cluster[2][$i]['nilai_centroid']);
+        // ambil kecamatan
+        foreach ($data_id_kecamatan as $kecamatan) {
+            $temp = [];
+            $total_data = count($kecamatan);
+            for ($i = 0; $i < $total_data ; $i++) {
+                $id_kecamatan = $kecamatan[$i];
+                $data_peternakan = $connection->query("
+                SELECT
+                    peternakan.normalisasi AS nilai_normalisasi,
+                    ternak.ternak AS nama_ternak,
+                    peternakan.id_ternak AS id_ternak,
+                    peternakan.id_kecamatan AS id_kecamatan
+                FROM
+                    peternakan
+                    INNER JOIN ternak ON peternakan.id_ternak = ternak.id 
+                WHERE
+                    peternakan.id_kecamatan = '$id_kecamatan'
+                    AND
+                    peternakan.id_tahun = '$tahun'
+                    AND
+                    peternakan.id_jenis = '$jenis'
+                ")->fetch_all(MYSQLI_ASSOC);
+                $temp[] = $data_peternakan;
+            }
+            $data_kecamatan[] = $temp;
         }
-        var_dump($minimum);
-    }
+
+        $centroid_baru = [];
+        $total_ternak = count(ambil_data_ternak());
+        // hitung rata2
+        for ($i=0; $i < 3; $i++) {
+            $temp =[];
+            for ($j=0; $j < $total_ternak; $j++) {
+                $avg =0.0000;
+                $total_data = count($data_kecamatan[$i]);
+                $nama_ternak = "";
+                foreach ($data_kecamatan[$i] as $kecamatan) {
+                    $avg += $kecamatan[$j]['nilai_normalisasi'];
+                    $nama_ternak = $kecamatan[$j]['nama_ternak'];
+                }
+                $temp[] = [
+                    'nama_ternak' => $nama_ternak,
+                    'nilai_normalisasi' => round($avg/$total_data, 4),
+                    'id_ternak' => '',
+                    'id_kecamatan' => ''
+                ];
+            }
+            $centroid_baru[] = $temp;
+        }
+        return $centroid_baru;
+    };
 
     function centroid_awal($data)
     {
