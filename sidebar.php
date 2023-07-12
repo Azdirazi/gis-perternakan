@@ -88,10 +88,10 @@
             </li>
         <?php endif;?>
         <?php if(!isset($_SESSION['login'])):?>
-            <li class="nav-item <?php if ((isset($_GET['halaman']) && $_GET['halaman'] == 'grafik') || isset($_GET['halaman']) == false) :?> active <?php endif;?>">
-                <a class="nav-link"  href="grafik.php?halaman=grafik">
+            <li class="nav-item <?php if ((isset($_GET['halaman']) && $_GET['halaman'] == 'grafis') || isset($_GET['halaman']) == false) :?> active <?php endif;?>">
+                <a class="nav-link"  href="grafis.php?halaman=grafis">
                     <i class="fa-sharp fa-solid fa-chart-simple"></i>
-                    <span>Grafik</span>
+                    <span>Grafis</span>
                 </a>
             </li>
             <li class="nav-item">

@@ -918,6 +918,17 @@ function login($form) {
                     keterangan.id_jenis = jenis.id
         ")->fetch_all(MYSQLI_ASSOC);
     }
+
+    function cari_data($tahun,$jenis)
+    {
+        global $connection;
+
+        $data = $connection->query("
+            SELECT * FROM keterangan WHERE id_tahun = '$tahun' AND id_jenis = '$jenis'
+        ")->fetch_assoc();
+
+        return $data;
+    }
     /* End of olah data keterangan */
 
 

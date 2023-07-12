@@ -38,7 +38,7 @@ include "function.php";
                                     Sistem Informasi Geografis dan Monitoring Ternak Kabupaten Bengkayang
                                 </div>
                                 <div class="card-body">
-                                    <p>Lorem Ipsum</p>
+                                    <p>Kabupaten Bengkayang adalah salah satu kabupaten di provinsi Kalimantan Barat, Indonesia. Kabupaten ini memiliki luas 5.396,30 km2 dengan jumlah penduduk 289.587 jiwa dan mayoritas penduduknya beretnik Dayak. Kantor Bupati terletak di Jalan Guna Baru Trans Rangkang, Bengkayang, 79282. </p>
                                 </div>
                             </div>
                             <div class="col-lg-12 col-12 card p-0">
