@@ -64,8 +64,8 @@ if (isset($_POST['tambah-data'])) {
                                     <tr>
                                         <th>Nama Kecamatan</th>
                                         <?php foreach (ambil_data_ternak() as $ternak):?>
-                                            <th>
-                                                <b><?= $ternak['nama']?></b>
+                                            <th nowrap>
+                                                <b class="px-4"><?= $ternak['nama']?></b>
                                                 <input type="hidden" value="<?= $ternak['id']?>" name="id-ternak[]">
                                             </th>
                                         <?php endforeach;?>
@@ -80,7 +80,7 @@ if (isset($_POST['tambah-data'])) {
                                                 <input type="hidden" name="id-kecamatan[]" value="<?= $kecamatan['id']?>">
                                             </td>
                                             <?php foreach (ambil_data_ternak() as $ternak):?>
-                                                <td><input type="text" name="jumlah-ke-<?=$i?>[]" class="form-control" required></td>
+                                                <td ><input type="text" name="jumlah-ke-<?=$i?>[]" class="form-control" required></td>
                                             <?php endforeach;?>
                                         </tr>
                                         <?php $i++?>

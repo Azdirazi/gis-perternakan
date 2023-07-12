@@ -32,8 +32,8 @@ include "function.php";
                 </div>
 
                 <div class="row justify-content-start">
-                    <div class="col-lg-12 col-sm-12 card card-body">
-                        <div class="card card-body">
+                    <div class="col-lg-12 col-sm-12">
+                        <div class="card card-body mb-3">
                             <form action="" method="get">
                                 <div class="form-group">
                                     <label for="tahun" class="form-label">Tahunn</label>
@@ -58,6 +58,7 @@ include "function.php";
                                 </div>
                             </form>
                         </div>
+                        <?php hitung_k_means($_GET['tahun'], $_GET['jenis']);?>
                     </div>
                 </div>
             </div>

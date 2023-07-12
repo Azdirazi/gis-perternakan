@@ -671,7 +671,103 @@ function login($form) {
         return redirect('peternakan.php?halaman=peternakan');
     }
 
-    
     /* end of peternakan */
+
+    /* Kalkulasi K-Mean*/
+    function hitung_k_means($tahun, $jenis)
+    {
+        // group kecamatan agar dapat di ambil centroid awal
+        $group_kecamatan = group_kecamatan($tahun, $jenis);
+
+        // ambil centroid awal data 1 2 3
+        $centroid = centroid_awal($group_kecamatan);
+        $data_cluster = [];
+        // hitung centroid karna ada 3
+        for ($i = 0; $i < 3; $i++) {
+            // hitung eucledian distance
+            $cluster_temp = [];
+            $indek_kecamatan = 0;
+            foreach ($group_kecamatan as $kecamatan) {
+                $jarak =0;
+                $indek_nilai_normal = 0;
+                foreach ($kecamatan  as $data) {
+                    $jarak += pow($data['nilai_normalisasi'] - $centroid[$i][$indek_nilai_normal]['nilai_normalisasi'], 2);
+                    $indek_nilai_normal++;
+                }
+                /*
+                 * Tambahkan jarak / centroid ke dalam group_kecamatan
+                 * */
+                $centro = round(sqrt($jarak), 4);
+                $data =
+                    [
+                        'id_kecamatan' => $group_kecamatan[$indek_kecamatan][0]['id_kecamatan'],
+                        'centroid' => 'C'.$i +1,
+                        'nilai_centroid' => $centro
+                    ];
+
+                $cluster_temp[] = $data;
+                $indek_kecamatan++;
+            }
+            $data_cluster[] = $cluster_temp;
+        }
+
+        // ambil nilai minimum karna ada 3 centroid maka
+        $minimum = [];
+        $total_data = count($data_cluster[0]);
+        for ($i = 0; $i < $total_data; $i++){
+            $minimum[] = min($data_cluster[0][$i]['nilai_centroid'], $data_cluster[1][$i]['nilai_centroid'], $data_cluster[2][$i]['nilai_centroid']);
+        }
+        var_dump($minimum);
+    }
+
+    function centroid_awal($data)
+    {
+        $centroid = [];
+
+        for($i = 0; $i < 3; $i++) {
+           $group_kecamatan = $data[$i];
+           $centroid[] = $group_kecamatan;
+        }
+
+        return $centroid;
+    }
+
+    function group_kecamatan($tahun, $jenis)
+    {
+        global $connection;
+
+        // ambil data kecamatan
+        $data_kecamatan = $connection->query("
+            SELECT
+                kecamatan.id as id_kecamatan,
+                kecamatan.nama as nama_kecamatan
+            FROM kecamatan
+        ")->fetch_all(MYSQLI_ASSOC);
+
+        $data_group = [];
+
+        foreach ($data_kecamatan as $kecamatan) {
+            $id_kecamatan = $kecamatan['id_kecamatan'];
+            $data_peternakan = $connection->query("
+                SELECT
+                    peternakan.normalisasi AS nilai_normalisasi,
+                    ternak.ternak AS nama_ternak,
+                    peternakan.id_ternak AS id_ternak,
+                    peternakan.id_kecamatan AS id_kecamatan
+                FROM
+                    peternakan
+                    INNER JOIN ternak ON peternakan.id_ternak = ternak.id 
+                WHERE
+                    peternakan.id_kecamatan = '$id_kecamatan'
+                    AND
+                    peternakan.id_tahun = '$tahun'
+                    AND
+                    peternakan.id_jenis = '$jenis'
+            ")->fetch_all(MYSQLI_ASSOC);
+            $data_group[] = $data_peternakan;
+        }
+
+        return $data_group;
+    }
 
 
